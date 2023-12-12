@@ -1,0 +1,62 @@
+package subnet;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class subnet {
+
+    public static void main(String[] args) throws IOException {
+
+        System.out.println("ENTER IP:");
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String ip = br.readLine();
+
+        String checkclass = ip.substring(0, 3);
+        int cc = Integer.parseInt(checkclass);
+
+        String mask = null;
+
+        if (cc >= 0 && cc <= 127) {
+            mask = "255.0.0.0";
+            System.out.println("Class A IP Address");
+            System.out.println("SUBNET MASK:\n" + mask);
+        } else if (cc >= 128 && cc <= 191) {
+            mask = "255.255.0.0";
+            System.out.println("Class B IP Address");
+            System.out.println("SUBNET MASK:\n" + mask);
+        } else if (cc >= 192 && cc <= 223) {
+            mask = "255.255.255.0";
+            System.out.println("Class C IP Address");
+            System.out.println("SUBNET MASK:\n" + mask);
+        } else if (cc >= 224 && cc <= 239) {
+            mask = "Not applicable for Class D (multicast) addresses";
+            System.out.println(mask);
+        } else if (cc >= 240 && cc <= 254) {
+            mask = "Not applicable for Class E (experimental) addresses";
+            System.out.println(mask);
+        } else {
+            System.out.println("Invalid IP address");
+            return;
+        }
+
+        String[] ipAddrParts = ip.split("\\.");
+        String[] maskParts = mask.split("\\.");
+
+        String networkAddr = "";
+        String lastAddr = "";
+
+        for (int i = 0; i < 4; i++) {
+            int x = Integer.parseInt(ipAddrParts[i]);
+            int y = Integer.parseInt(maskParts[i]);
+            int z = x & y;
+            networkAddr += z + ".";
+
+            int w = z | (y ^ 255);
+            lastAddr += w + ".";
+        }
+
+        System.out.println("Network Address: " + networkAddr.substring(0, networkAddr.length() - 1));
+        System.out.println("Last IP of Block: " + lastAddr.substring(0, lastAddr.length() - 1));
+    }
+}

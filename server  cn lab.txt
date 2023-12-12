@@ -1,0 +1,28 @@
+package client_server;
+
+import java.net.*;
+import java.io.*;
+
+
+public class server {
+
+
+public static void main(String[] args) throws Exception
+{
+System.out.println("Server is Started");
+ServerSocket ss = new ServerSocket(9999);
+System.out.println("Server is waiting for client request");
+Socket s= ss.accept();
+System.out.println("Client Connected");
+
+InputStreamReader in= new InputStreamReader(s.getInputStream());
+BufferedReader bf=new BufferedReader(in);
+String str = bf.readLine();
+System.out.println("Client : "+str);
+PrintWriter pr=new PrintWriter(s.getOutputStream());
+pr.println("Hello from Server");
+
+pr.flush();
+
+}
+}
